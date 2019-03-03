@@ -17,13 +17,14 @@ class NestedSetTree
     const POS_LAST_NODE = -2;
     
     public $db;
-    public $tableName;
+    public $tableName = 'tree';
     public $keyTree = 'tree'; // for multiple tree
     public $keyId = 'id';
     public $keyParentId = 'parent_id';
     public $keyLft = 'lft';
     public $keyRgt = 'rgt';
     public $keyDepth = 'depth'; // aka level
+    public $keyPath = 'path'; // aka level
     
     public $treeId = 1; // default value for $this->keyTree
 
@@ -33,15 +34,16 @@ class NestedSetTree
      */
     public function __construct($config)
     {
-        $this->db = Yii::$app->get('ilias');
-        $this->tableName = ArrayHelper::getValue($config, 'tableName');
-        $this->treeId = ArrayHelper::getValue($config, 'treeId');
-        $this->keyTree = ArrayHelper::getValue($config, 'keyTree');
-        $this->keyId = ArrayHelper::getValue($config, 'keyId');
-        $this->keyParentId = ArrayHelper::getValue($config, 'keyParentId');
-        $this->keyLft = ArrayHelper::getValue($config, 'keyLft');
-        $this->keyRgt = ArrayHelper::getValue($config, 'keyRgt');
-        $this->keyDepth = ArrayHelper::getValue($config, 'keyDepth');
+        $this->db = \Yii::$app->get('ilias');
+        $this->tableName = ArrayHelper::getValue($config, 'tableName', $this->tableName);
+        $this->treeId = ArrayHelper::getValue($config, 'treeId', $this->treeId);
+        $this->keyTree = ArrayHelper::getValue($config, 'keyTree', $this->keyTree);
+        $this->keyId = ArrayHelper::getValue($config, 'keyId', $this->keyId);
+        $this->keyParentId = ArrayHelper::getValue($config, 'keyParentId', $this->keyParentId);
+        $this->keyLft = ArrayHelper::getValue($config, 'keyLft', $this->keyLft);
+        $this->keyRgt = ArrayHelper::getValue($config, 'keyRgt', $this->keyRgt);
+        $this->keyDepth = ArrayHelper::getValue($config, 'keyDepth', $this->keyDepth);
+        $this->keyPath = ArrayHelper::getValue($config, 'keyPath', $this->keyPath);
     }
 
     public function getAll(int $treeId) : array

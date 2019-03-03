@@ -31,8 +31,20 @@ class TreeController extends Controller
 
     public function actionList()
     {
-        var_dump('stop');exit;
-        
+        $items = [];
+        if (Yii::$app->params['useTree'] == 'ns') {
+            $ns = new \app\models\tree\NestedSetTree([
+                'keyId' => 'child',
+                'keyParentId' => 'parent',
+            ]);
+            $items = $ns->getAll(1);
+        } elseif (Yii::$app->params['useTree'] == 'mp') {
+            $mp = new \app\models\tree\MaterializedPathTree([
+                'keyId' => 'child',
+                'keyParentId' => 'parent',
+            ]);
+            $items = $mp->getAll(1);
+        }
         
         return $this->render('list', [
             'items' => $items,

@@ -2,14 +2,17 @@
 
 namespace app\models\tree;
 
+use Yii;
+use yii\db\Query;
 use yii\db\Expression;
+use yii\helpers\ArrayHelper;
 
 class MaterializedPathTree
 {
     const MAX_POSSIBLE_DEPTH = 100;
     
     public $db;
-    public $tableName;
+    public $tableName = 'tree';
     public $keyTree = 'tree'; // for multiple tree
     public $keyId = 'id';
     public $keyParentId = 'parent_id';
@@ -22,16 +25,28 @@ class MaterializedPathTree
 
     public function __construct($config)
     {
-        $this->db = Yii::$app->get('ilias');
-        $this->tableName = ArrayHelper::getValue($config, 'tableName');
-        $this->treeId = ArrayHelper::getValue($config, 'treeId');
-        $this->keyTree = ArrayHelper::getValue($config, 'keyTree');
-        $this->keyId = ArrayHelper::getValue($config, 'keyId');
-        $this->keyParentId = ArrayHelper::getValue($config, 'keyParentId');
-        $this->keyLft = ArrayHelper::getValue($config, 'keyLft');
-        $this->keyRgt = ArrayHelper::getValue($config, 'keyRgt');
-        $this->keyDepth = ArrayHelper::getValue($config, 'keyDepth');
-        $this->keyPath = ArrayHelper::getValue($config, 'keyPath');
+        $this->db = \Yii::$app->get('ilias');
+        $this->tableName = ArrayHelper::getValue($config, 'tableName', $this->tableName);
+        $this->treeId = ArrayHelper::getValue($config, 'treeId', $this->treeId);
+        $this->keyTree = ArrayHelper::getValue($config, 'keyTree', $this->keyTree);
+        $this->keyId = ArrayHelper::getValue($config, 'keyId', $this->keyId);
+        $this->keyParentId = ArrayHelper::getValue($config, 'keyParentId', $this->keyParentId);
+        $this->keyLft = ArrayHelper::getValue($config, 'keyLft', $this->keyLft);
+        $this->keyRgt = ArrayHelper::getValue($config, 'keyRgt', $this->keyRgt);
+        $this->keyDepth = ArrayHelper::getValue($config, 'keyDepth', $this->keyDepth);
+        $this->keyPath = ArrayHelper::getValue($config, 'keyPath', $this->keyPath);
+    }
+    
+    public function getAll(int $treeId) : array
+    {
+        $data = (new Query())
+                ->select(['*'])
+                ->from($this->tableName)
+                ->where([$this->keyTree => $treeId])
+                ->orderBy($this->keyPath)
+                ->all($this->db);
+
+        return $data;
     }
 
     /**
