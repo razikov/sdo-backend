@@ -1,0 +1,39 @@
+{
+  "name": "ilias-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "",
+  "author": "Разиков Алексей <razikov88@yandex.ru>",
+  "license": "MIT",
+  "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "ckeditor/ckeditor5-build-classic",
+    "axios": "^0.18.0",
+    "element-ui": "^2.5.4",
+    "jquery-datetimepicker": "^2.5.20",
+    "bootstrap-select": "^1.13.5",
+    "vue": "^2.5.17"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.3.4",
+    "@babel/polyfill": "^7.2.5",
+    "@babel/preset-env": "^7.3.4",
+    "grunt": "^1.0.3",
+    "grunt-babel": "^8.0.0",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-rollup": "^9.0.0",
+    "grunt-sass-tilde-importer": "^1.0.2",
+    "node-sass": "^4.9.3",
+    "rollup": "^1.1.2",
+    "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-alias": "^1.5.1",
+    "rollup-plugin-commonjs": "8.4",
+    "rollup-plugin-node-globals": "^1.2.1",
+    "rollup-plugin-node-resolve": "^3.3.0",
+    "rollup-plugin-replace": "^2.1.0",
+    "rollup-plugin-uglify": "^4.0.0",
+    "rollup-plugin-vue": "4.3.2",
+    "vue-template-compiler": "^2.5.17"
+  }
+}
