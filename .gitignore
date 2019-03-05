@@ -39,3 +39,6 @@ tests/_support/_generated
 
 /web/uploads/*
 /web/js/app.js
+/config/_db.php
+/config/_users.php
+/config/_db_ilias.php
