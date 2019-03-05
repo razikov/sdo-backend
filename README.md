@@ -16,3 +16,7 @@
 * ...sdo-backend/config]$ cp db_ilias.php _db_ilias.php
 * ...sdo-backend/config]$ cp users.php _users.php
 * в скопированные версии внести правки согласно своему окружению
+
+# Обновление
+
+* ...sdo-backend]$ git pull
