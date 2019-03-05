@@ -7,4 +7,3 @@ return [
     'password' => 'hexrf88',
     'charset' => 'utf8',
 ];
-// ilias aipohL3a

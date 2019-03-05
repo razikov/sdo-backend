@@ -143,22 +143,26 @@ class ImportUserForm extends ImportUser
     }
 
 
-    public function setUsersFromXML() : bool
+    public function setUsersFromXML()
     {
         if ($this->usersJson == '' && $this->upload) {
             $data = XmlHelper::read(Yii::getAlias('@webroot').$this->upload->url);
             $users = [];
             foreach ($data as $row) {
                 $user = new UserIlias();
+                $pwd = ArrayHelper::getValue($row, ['password'], '');
                 $user->load([
-                    'firstname' => trim(sprintf('%s %s', $row['name'] ?? null, $row['otch'] ?? null)),
-                    'lastname' => $row['fam'] ?? null,
-                    'email' => $row['email'] ?? null,
-                    'phone_office' => $row['phone'] ?? null,
-                    'login' => $row['login'] ?? null,
-                    'rawPassword' => $row['password'] ?? null,
-                    'passwd' => $row['password'] ? md5($row['password']) : null,
-                    'institution' => $row['ou'] ?? null,
+                    'firstname' => trim(sprintf('%s %s', 
+                            ArrayHelper::getValue($row, ['name'], ''),
+                            ArrayHelper::getValue($row, ['otch'], '')
+                        )),
+                    'lastname' => ArrayHelper::getValue($row, ['fam']),
+                    'email' => ArrayHelper::getValue($row, ['email']),
+                    'phone_office' => ArrayHelper::getValue($row, ['phone']),
+                    'login' => ArrayHelper::getValue($row, ['login']),
+                    'rawPassword' => $pwd,
+                    'passwd' => $pwd ? md5($pwd) : $pwd,
+                    'institution' => ArrayHelper::getValue($row, ['ou']),
                 ], '');
                 $user->validate();
                 $users[] = $user;
@@ -170,7 +174,7 @@ class ImportUserForm extends ImportUser
         return false;
     }
     
-    public function sinhronizeUsersFromJsonUsers() : bool
+    public function sinhronizeUsersFromJsonUsers()
     {
         if ($this->usersJson) {
             $users = [];

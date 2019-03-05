@@ -37,7 +37,7 @@ class MaterializedPathTree
         $this->keyPath = ArrayHelper::getValue($config, 'keyPath', $this->keyPath);
     }
     
-    public function getAll(int $treeId) : array
+    public function getAll($treeId)
     {
         $data = (new Query())
                 ->select(['*'])
@@ -81,7 +81,7 @@ class MaterializedPathTree
         foreach ($data as $row) {
             $childs[] = $row[$this->keyId];
         }
-        return $childs ?? [];
+        return $childs ? $childs : [];
     }
 
     /**

@@ -43,7 +43,7 @@ class Upload extends ActiveRecord
         return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
-    public function behaviors(): array
+    public function behaviors()
     {
         return [
             [

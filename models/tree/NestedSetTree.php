@@ -63,7 +63,7 @@ class NestedSetTree
      * @param int $nodeId
      * @return int[]
      */
-    public function getSubTreeIds(int $nodeId) : array
+    public function getSubTreeIds($nodeId)
     {
         $data = (new Query())
                 ->select(["s.{$this->keyId}"])
@@ -76,7 +76,7 @@ class NestedSetTree
                 ])
                 ->column($this->db);
 
-        return $data ?? [];
+        return $data ? $data : [];
     }
 
     /**
@@ -88,7 +88,7 @@ class NestedSetTree
      * @param int $rgt - правый индекс родителя
      * @return array
      */
-    public function getChilds(int $treeId, int $lft, int $rgt) : array
+    public function getChilds($treeId, $lft, $rgt)
     {
         $data = (new Query())
                 ->select(['*'])
@@ -121,7 +121,7 @@ class NestedSetTree
                 ->orderBy("s.{$this->keyLft}")
                 ->all($this->db);
 
-        return $data ?? [];
+        return $data ? $data : [];
     }
     
     /**
@@ -132,7 +132,7 @@ class NestedSetTree
      * @param int $rgt - правый индекс родителя
      * @return array
      */
-    public function getCurrent(int $treeId, int $lft, int $rgt) : array
+    public function getCurrent($treeId, $lft, $rgt)
     {
         $data = (new Query())
                 ->select(['*'])
@@ -143,7 +143,7 @@ class NestedSetTree
                 ->orderBy("s.{$this->keyLft}")
                 ->all($this->db);
 
-        return $data ?? [];
+        return $data ? $data : [];
     }
     
     /**
@@ -175,7 +175,7 @@ class NestedSetTree
                 $pathIds[] = $row[$this->keyId];
             }
         }
-        return $pathIds ?? [];
+        return $pathIds ? $pathIds : [];
     }
 
     /**
@@ -187,7 +187,7 @@ class NestedSetTree
      * @throws Exception
      */
     
-    function InsertNode(int $nodeId, int $parentId, int $position)
+    function InsertNode($nodeId, $parentId, $position)
     {
         /**
          * Если вставляется первым в родитея то индекс будет левый +1 от родителя

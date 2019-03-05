@@ -1,8 +1,16 @@
 <?php
 
 $params = require __DIR__ . '/params.php';
-$db = require __DIR__ . '/db.php';
-$ilias = require __DIR__ . '/ilias.php';
+if (file_exists(__DIR__ . '/_db.php')) {
+    $users = require __DIR__ . '/_db.php';
+} else {
+    $users = require __DIR__ . '/db.php';
+}
+if (file_exists(__DIR__ . '/_db_ilias.php')) {
+    $users = require __DIR__ . '/_db_ilias.php';
+} else {
+    $users = require __DIR__ . '/db_ilias.php';
+}
 
 $config = [
     'id' => 'ILIAS backend',

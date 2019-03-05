@@ -6,7 +6,6 @@
   "author": "Разиков Алексей <razikov88@yandex.ru>",
   "license": "MIT",
   "dependencies": {
-    "@ckeditor/ckeditor5-build-classic": "ckeditor/ckeditor5-build-classic",
     "axios": "^0.18.0",
     "element-ui": "^2.5.4",
     "jquery-datetimepicker": "^2.5.20",
