@@ -182,27 +182,15 @@ class XmlHelper
                 $Login = $user->appendChild($nodeLogin);
                 $cdata = $dom->createCDATASection($modelUser->login);
                 $Login->appendChild($cdata);
-                //==============
-//                $nodeRole = $dom->createElement("Role");
-//                $Role = $user->appendChild($nodeRole);
-//                $cdata = $dom->createCDATASection('User');
-//                $Role->appendChild($cdata);
-//                //Атрибуты
-//                $Id = $dom->createAttribute('Id');
-//                $Id->value = 'il_0_role_276'; //!!!!!!!!!!!!!!!!
-//                $Role->appendChild($Id);
-//                $Type = $dom->createAttribute('Type');
-//                $Type->value = 'Global'; //!!!!!!!!!!!!!!!!!!!!!
-//                $Role->appendChild($Type);
-                // Эксперимент
                 // NOTE: Нельзя создавать пользователя без хотя бы 1 глобальной роли
                 foreach ($modelUser->roles as $modelUserRole) {
                     $nodeRole = $dom->createElement("Role");
                     $Role = $user->appendChild($nodeRole);
-                    $cdata = $dom->createCDATASection('User');
+                    $cdata = $dom->createCDATASection($modelUserRole->objectData->title);
                     $Role->appendChild($cdata);
                     $Id = $dom->createAttribute('Id');
-                    $Id->value = $modelUserRole->iliasId; //'il_0_role_276';
+//                    $Id->value = $modelUserRole->iliasId; //'il_0_role_276';
+                    $Id->value = $modelUserRole->iliasId;
                     $Role->appendChild($Id);
                     $Type = $dom->createAttribute('Type');
                     $Type->value = $modelUserRole->hasGlobal() ? 'Global' : 'Local';
@@ -216,11 +204,13 @@ class XmlHelper
                 //==============
                 $nodePassword = $dom->createElement("Password");
                 $Password = $user->appendChild($nodePassword);
-                $cdata = $dom->createCDATASection($modelUser->passwd);
+//                $cdata = $dom->createCDATASection($modelUser->passwd);
+                $cdata = $dom->createCDATASection($modelUser->rawPassword);
                 $Password->appendChild($cdata);
                 //Атрибуты
                 $Type = $dom->createAttribute('Type');
-                $Type->value = 'ILIAS3';
+//                $Type->value = 'ILIAS3';
+                $Type->value = 'PLAIN';
                 $Password->appendChild($Type);
                 //==============
                 $nodeFirstname = $dom->createElement("Firstname");
@@ -232,6 +222,12 @@ class XmlHelper
                 $Lastname = $user->appendChild($nodeLastname);
                 $cdata = $dom->createCDATASection($modelUser->lastname);
                 $Lastname->appendChild($cdata);
+                //==============
+                //==============
+                $nodeGender = $dom->createElement("Gender");
+                $gender = $user->appendChild($nodeGender);
+                $cdata = $dom->createCDATASection('n');
+                $gender->appendChild($cdata);
                 //==============
                 $nodeEmail = $dom->createElement("Email");
                 $Email = $user->appendChild($nodeEmail);
@@ -247,31 +243,6 @@ class XmlHelper
                 $Phone = $user->appendChild($nodePhone);
                 $cdata = $dom->createCDATASection($modelUser->institution);
                 $Phone->appendChild($cdata);
-                //==============
-//                $nodeUserDefinedField = $dom->createElement("UserDefinedField");
-//                $UserDefinedField = $user->appendChild($nodeUserDefinedField);
-//                $cdata = $dom->createCDATASection($arr_user['mr']);
-//                $UserDefinedField->appendChild($cdata);
-//                //Атрибуты
-//                $Id = $dom->createAttribute('Id');
-//                $Id->value = 'il_0_udf_1'; //!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//                $UserDefinedField->appendChild($Id);
-//                $Name = $dom->createAttribute('Name');
-//                $Name->value = 'МР'; //!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//                $UserDefinedField->appendChild($Name);
-//                //==============
-//                $nodeUserDefinedField = $dom->createElement("UserDefinedField");
-//                $UserDefinedField = $user->appendChild($nodeUserDefinedField);
-//                $cdata = $dom->createCDATASection($arr_user['ou']);
-//                $UserDefinedField->appendChild($cdata);
-//                //Атрибуты
-//                $Id = $dom->createAttribute('Id');
-//                $Id->value = 'il_0_udf_3'; //!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//                $UserDefinedField->appendChild($Id);
-//                $Name = $dom->createAttribute('Name');
-//                $Name->value = 'ОУ'; //!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//                $UserDefinedField->appendChild($Name);
-                //==============
             }
         }
         $dom->save($filename);
@@ -299,15 +270,15 @@ class XmlHelper
         }
         $i++;
         foreach ($arrUsers as $user) {
+            $sheet->setCellValueByColumnAndRow(1, $i, $user->fullName);
+            $sheet->setCellValueByColumnAndRow(2, $i, $user->email);
             if ($user->validate()) {
-                $sheet->setCellValueByColumnAndRow(1, $i, $user->fullName);
-                $sheet->setCellValueByColumnAndRow(2, $i, $user->email);
                 $sheet->setCellValueByColumnAndRow(3, $i, $user->login);
                 $sheet->setCellValueByColumnAndRow(4, $i, $user->rawPassword);
-                $sheet->setCellValueByColumnAndRow(5, $i, '');
-                $sheet->setCellValueByColumnAndRow(6, $i, $user->institution);
-                $i++;
             }
+            $sheet->setCellValueByColumnAndRow(5, $i, '');
+            $sheet->setCellValueByColumnAndRow(6, $i, $user->institution);
+            $i++;
         }
         
         $writer = IOFactory::createWriter($spreadsheet, "Xls");

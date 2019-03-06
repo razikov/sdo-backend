@@ -45,6 +45,7 @@ class Role extends ActiveRecord
                 ->select([ObjectData::tableName().'.title', 'role_id'])
                 ->leftJoin(ObjectData::tableName(), ObjectData::tableName().'.obj_id = role_id')
                 ->indexBy('role_id')
+//                ->indexBy('title')
                 ->column();
     }
     
@@ -57,7 +58,7 @@ class Role extends ActiveRecord
     public function hasGlobal()
     {
         return Yii::$app->get('ilias')
-                ->createCommand("SELECT 1 FROM ilias.rbac_fa where rol_id = :role_id and parent = 8 and assign = 'y'", [':role_id' => $this->role_id])
+                ->createCommand("SELECT 1 FROM rbac_fa where rol_id = :role_id and parent = 8 and assign = 'y'", [':role_id' => $this->role_id])
                 ->queryScalar();
     }
     
