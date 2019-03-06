@@ -10,7 +10,7 @@ class UserIliasSearch extends UserIlias
     public function rules()
     {
         return [
-            [['login', 'firstname', 'lastname', 'email'], 'safe'],
+            [['login', 'firstname', 'lastname', 'email', 'institution'], 'safe'],
         ];
     }
     public function search($filter)
@@ -22,6 +22,7 @@ class UserIliasSearch extends UserIlias
         $query->andFilterWhere(['like', 'firstname', $this->firstname]);
         $query->andFilterWhere(['like', 'lastname', $this->lastname]);
         $query->andFilterWhere(['like', 'email', $this->email]);
+        $query->andFilterWhere(['like', 'institution', $this->institution]);
 
         return new ActiveDataProvider([
             'query' => $query,

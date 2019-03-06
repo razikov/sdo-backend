@@ -16,6 +16,6 @@ use yii\grid\GridView;
         'validUntil',
         'last_login',
         'email',
-//        'second_email',
+        'institution',
     ],
 ]); ?>

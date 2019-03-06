@@ -40,6 +40,7 @@ class UserIlias extends \yii\db\ActiveRecord
             'firstname' => Yii::t('app', 'Имя'),
             'validUntil' => Yii::t('app', 'Срок действия'),
             'last_login' => Yii::t('app', 'Последний логин'),
+            'institution' => Yii::t('app', 'Институт'),
         ];
     }
     
