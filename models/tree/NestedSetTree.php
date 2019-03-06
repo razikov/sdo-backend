@@ -46,7 +46,7 @@ class NestedSetTree
         $this->keyPath = ArrayHelper::getValue($config, 'keyPath', $this->keyPath);
     }
 
-    public function getAll(int $treeId) : array
+    public function getAll($treeId)
     {
         $data = (new Query())
                 ->select(['*'])
@@ -99,7 +99,7 @@ class NestedSetTree
                 ->orderBy("s.{$this->keyLft}")
                 ->all($this->db);
 
-        return $data ?? [];
+        return $data ? $data : [];
     }
     
     /**
@@ -110,7 +110,7 @@ class NestedSetTree
      * @param int $rgt - правый индекс родителя
      * @return array
      */
-    public function getParents(int $treeId, int $lft, int $rgt) : array
+    public function getParents($treeId, $lft, $rgt)
     {
         $data = (new Query())
                 ->select(['*'])

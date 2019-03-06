@@ -15,7 +15,7 @@ use DOMDocument;
  */
 class XmlHelper
 {
-    function generate_password(int $number) : string
+    function generate_password($number)
     {
         $arr = [
             'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
@@ -31,7 +31,7 @@ class XmlHelper
         return $pass;
     }
 
-    function translit(string $string) : string
+    function translit($string)
     {
         $replace = [
             "'" => "", "`" => "", "а" => "a", "А" => "a", "б" => "b", "Б" => "b",
@@ -51,7 +51,7 @@ class XmlHelper
         return $str = iconv("UTF-8", "ISO-8859-1", strtr($string, $replace));
     }
 
-    function getLogin(string $fam = '', string $name = '', string $otch = '') : string
+    function getLogin($fam = '', $name = '', $otch = '')
     {
         $str = $fam;
         $str .= mb_substr($name, 0, 1, 'utf-8');
@@ -64,7 +64,7 @@ class XmlHelper
      * @param string $fname
      * @return array
      */
-    function read(string $fname) : array
+    function read($fname)
     {
         $spreadsheet = IOFactory::load($fname);
         $spreadsheet->setActiveSheetIndex(0);
@@ -104,7 +104,7 @@ class XmlHelper
         return $arr;
     }
     
-    function readUserList(string $fname) : array
+    function readUserList($fname)
     {
         $spreadsheet = IOFactory::load($fname);
         $spreadsheet->setActiveSheetIndex(0);
@@ -129,7 +129,7 @@ class XmlHelper
      * @param string $fname
      * @return type
      */
-    function read_ilias_users(string $fname)
+    function read_ilias_users($fname)
     {
         $spreadsheet = IOFactory::load($fname);
         $spreadsheet->setActiveSheetIndex(0);
@@ -160,7 +160,7 @@ class XmlHelper
         return $arr;
     }
 
-    function renderXML(array $arr_users, string $filename = 'render.xml')
+    function renderXML($arr_users, $filename = 'render.xml')
     {
         $dom = new DOMDocument('1.0', 'UTF-8');
         $nodeUsers = $dom->createElement("Users");

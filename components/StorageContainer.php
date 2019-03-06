@@ -39,7 +39,7 @@ class StorageContainer extends Component
      * @return FileStorageInterface
      * @throws InvalidConfigException
      */
-    public function getFileStorageByUploadType(string $storageType): FileStorageInterface
+    public function getFileStorageByUploadType($storageType)
     {
         if (!isset($this->storageInstances[$storageType])) {
             throw new InvalidConfigException('Отсутствует данный тип storage');
