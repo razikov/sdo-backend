@@ -52,7 +52,6 @@ class FindPasswordController extends Controller
             $file = UploadedFile::getInstanceByName('file');
             if ($file) {
                 $arrUsers = XmlHelper::readUserList($file->tempName);
-                var_dump($arrUsers);exit;
                 foreach ($arrUsers as $arr) {
                     $model = FindPassword::find()->where(['login' => $arr['login']])->one();
                     if (!$model) {
