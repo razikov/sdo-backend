@@ -26,7 +26,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'upload'],
+                        'actions' => ['logout', 'upload', 'twig'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -124,4 +124,12 @@ class SiteController extends Controller
 
         return ['uploaded' => false, 'errors' => 'Должен был быть post запрос'];
     }
+    
+    public function actionTwig()
+    {
+        $this->layout = null;
+        
+        return $this->renderPartial('index.twig');
+    }
+    
 }

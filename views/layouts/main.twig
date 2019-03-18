@@ -1,0 +1,95 @@
+{{ register_asset_bundle('/app/assets/AppAsset') }}
+{{ register_asset_bundle('/yii/bootstrap/BootstrapPluginAsset') }}
+
+{% macro nav(navigation, parent) %}
+    {% import _self as macros %}
+
+    {% for item in navigation %}
+        {% set active = app.request.getPathInfo starts with item.url or item.url == '/' and app.request.getPathInfo is empty %}
+        {% set hasChildren = not item.items|default([]) is empty %}
+
+        {% if hasChildren %}
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    {{ item.label }} <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    {{ macros.nav(item.items|default([]), (parent?:'')~item.url~'/') }}
+                </ul>
+            </li>
+        {% else %}
+            <li>
+                <a href="{{ item.url|trim('/') }}" {{ active ? 'class="active"' : '' }}>{{ item.label }}</a>
+            </li>
+        {% endif %}
+
+    {% endfor %}
+{% endmacro %}
+
+{% set isGuest = app.user.isGuest %}
+
+{{ void(this.beginPage()) }}
+<!DOCTYPE html>
+<html lang="{{ app.language }}">
+<head>
+    <meta charset="{{ app.charset }}">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {{ html.csrfMetaTags | raw }}
+    <title>{{ this.title }}</title>
+    {{ void(this.head) }}
+</head>
+<body>
+{{ void(this.beginBody()) }}
+<div class="wrap">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ app.homeUrl }}">{{ app.name }}</a>
+            </div>
+
+            <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    {% import _self as macros %}
+                    {{ macros.nav([
+                        {
+                            'label': 'Система',
+                            'items': [
+                                {'label': 'Дерево', 'url': url(['/tree/list'])},
+                                {'label': 'Пользователи', 'url': url(['/user/list'])},
+                                {'label': 'Файлы', 'url': url(['/files/list'])},
+                                {'label': 'Статистика'},
+                                {'label': 'по сессиям', 'url': url(['/statistics/session'])},
+                            ],
+                        },
+                        {
+                            'label': 'Импорт',
+                            'items': [
+                                {'label': 'Список', 'url': url(['/import-user/list'])},
+                                {'label': 'Добавить', 'url': url(['/import-user/create'])},
+                            ],
+                        },
+                        {
+                            'label': 'Найти пароль', 'url': url(['/find-password/list'])
+                        },
+                        {'label': 'Login', 'url': url(['/site/login'])}
+                    ]) }}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</div>
+{{ void(this.endBody()) }}
+</body>
+</html>
+{{ void(this.endPage()) }}
