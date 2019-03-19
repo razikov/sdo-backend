@@ -51,7 +51,7 @@ $form = ActiveForm::begin([
     'id' => 'form'
 ]);
 ?>
-<?= $form->field($model, 'usersJson')->hiddenInput()->label(false); ?>
+<?= $form->field($model, 'users_json')->hiddenInput()->label(false); ?>
 <?= $form->field($model, 'step')->hiddenInput(['id' => 'import_step'])->label(false); ?>
 <div class="form-group">
     <label class="control-label">Этап:</label>
@@ -86,6 +86,7 @@ $form = ActiveForm::begin([
         <label class="control-label">Загружен:</label>
         <div><?= Html::a($model->upload->filename, $model->upload->url); ?></div>
     </div>
+    <?= $form->field($model, 'name'); ?>
     <div>
         <?= $form->field($model, 'roleIds')->widget(
             Select::class,
