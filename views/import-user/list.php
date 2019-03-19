@@ -16,24 +16,24 @@ use yii\helpers\Url;
             'attribute' => 'id',
         ],
         [
-            'attribute' => 'upload_id',
+            'attribute' => 'name',
+        ],
+        [
+            'attribute' => 'created_at',
             'format' => 'raw',
             'value' => function ($item) {
-                return Html::a($item->upload->filename, $item->upload->url);
+                return Yii::$app->formatter->asDatetime($item->created_at, 'd.MM.yyyy H:mm:ss');
             }
         ],
         [
-            'attribute' => 'upload_id_xls',
+            'header' => 'Файлы',
             'format' => 'raw',
             'value' => function ($item) {
-                return Html::a($item->uploadXls->filename, $item->uploadXls->url);
-            }
-        ],
-        [
-            'attribute' => 'upload_id_xml',
-            'format' => 'raw',
-            'value' => function ($item) {
-                return Html::a($item->uploadXml->filename, $item->uploadXml->url);
+                return sprintf("[%s]; [%s]; [%s];",
+                        Html::a($item->getAttributeLabel('upload_id'), $item->upload->url),
+                        Html::a($item->getAttributeLabel('upload_id_xls'), $item->uploadXls->url),
+                        Html::a($item->getAttributeLabel('upload_id_xml'), $item->uploadXml->url)
+                        );
             }
         ],
         [

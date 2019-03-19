@@ -6,6 +6,7 @@ use Yii;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use app\models\Upload;
+use yii\behaviors\TimestampBehavior;
 
 class ImportUser extends ActiveRecord
 {
@@ -23,6 +24,8 @@ class ImportUser extends ActiveRecord
     {
         return [
             'step' => Yii::t('app', 'Этап'),
+            'name' => Yii::t('app', 'Название'),
+            'created_at' => Yii::t('app', 'Дата'),
             'upload_id' => Yii::t('app', 'Импорт XLS'),
             'upload_id_xml' => Yii::t('app', 'Экспорт XML'),
             'upload_id_xls' => Yii::t('app', 'Экспорт XLS'),
@@ -43,11 +46,25 @@ class ImportUser extends ActiveRecord
     public function rules()
     {
         return [
-            [['usersJson', 'upload_id', 'step', 'role_ids', 'upload_id_xml', 'upload_id_xls'], 'required'],
+            [['users_json', 'upload_id', 'step', 'role_ids', 'upload_id_xml', 'upload_id_xls', 'name'], 'required'],
             [['upload_id', 'upload_id_xml', 'upload_id_xls'], 'number'],
-            [['usersJson'], 'default', 'value' => ''],
+            [['users_json'], 'default', 'value' => ''],
             [['upload_id'], 'default', 'value' => null],
             [['step'], 'default', 'value' => self::STAGE_IMPORT],
+        ];
+    }
+    
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::class,
+                'createdAtAttribute' => 'created_at',
+                'updatedAtAttribute' => false,
+                'value' => function () {
+                    return date('Y-m-d H:i:s');
+                },
+            ],
         ];
     }
     

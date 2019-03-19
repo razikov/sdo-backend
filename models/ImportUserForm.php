@@ -15,16 +15,16 @@ class ImportUserForm extends ImportUser
 
     public function attributeLabels()
     {
-        return [
+        return array_merge(parent::attributeLabels(), [
             'roleIds' => Yii::t('app', 'Роли'),
-        ];
+        ]);
     }
     
     public function init()
     {
         $this->step = self::STAGE_IMPORT;
         $this->roleIds = [276];
-        $this->usersJson = '';
+        $this->users_json = '';
         $this->scenario = self::SCENARIO_IMPORT_FORM;
     }
     
@@ -33,18 +33,24 @@ class ImportUserForm extends ImportUser
         if ($this->scenario == self::SCENARIO_IMPORT_FORM) {
             $rules = [
                 [
-                    ['users', 'upload_id', 'roleIds', 'step', 'usersJson', 'upload_id_xls', 'upload_id_xml'],
+                    ['users', 'name', 'upload_id', 'roleIds', 'step', 'users_json', 'upload_id_xls', 'upload_id_xml'],
                     'safe',
-                    'on' => self::SCENARIO_IMPORT_FORM],
+                    'on' => self::SCENARIO_IMPORT_FORM
+                ],
                 [
-                    ['users', 'upload_id', 'roleIds', 'step', 'usersJson', 'upload_id_xls', 'upload_id_xml'],
+                    ['name'],
                     'required',
                     'when' => function() {
-                        return $this->step == self::STAGE_GENERATE_FILE;
+                        return $this->step != self::STAGE_IMPORT;
                     },
-                    'whenClient' => 'function(attribute, value) {
-                        return $("#import_step") == ' . self::STAGE_GENERATE_FILE . ';
-                    }',
+                    'on' => self::SCENARIO_IMPORT_FORM
+                ],
+                [
+                    ['name'],
+                    'string', 'min' => 4,
+                    'when' => function() {
+                        return $this->step == self::STAGE_EDIT;
+                    },
                     'on' => self::SCENARIO_IMPORT_FORM
                 ],
                 [
@@ -53,6 +59,17 @@ class ImportUserForm extends ImportUser
                     'when' => function() {
                         return $this->step == self::STAGE_EDIT;
                     },
+                    'on' => self::SCENARIO_IMPORT_FORM
+                ],
+                [
+                    ['users', 'upload_id', 'roleIds', 'step', 'users_json', 'upload_id_xls', 'upload_id_xml'],
+                    'required',
+                    'when' => function() {
+                        return $this->step == self::STAGE_GENERATE_FILE;
+                    },
+                    'whenClient' => 'function(attribute, value) {
+                        return $("#import_step") == ' . self::STAGE_GENERATE_FILE . ';
+                    }',
                     'on' => self::SCENARIO_IMPORT_FORM
                 ],
             ];
@@ -145,7 +162,7 @@ class ImportUserForm extends ImportUser
 
     public function setUsersFromXML()
     {
-        if ($this->usersJson == '' && $this->upload) {
+        if ($this->users_json == '' && $this->upload) {
             $data = XmlHelper::read(Yii::getAlias('@webroot').$this->upload->url);
             $users = [];
             foreach ($data as $row) {
@@ -176,9 +193,9 @@ class ImportUserForm extends ImportUser
     
     public function sinhronizeUsersFromJsonUsers()
     {
-        if ($this->usersJson) {
+        if ($this->users_json) {
             $users = [];
-            $usersJson = json_decode($this->usersJson);
+            $usersJson = json_decode($this->users_json);
             foreach ($usersJson as $key => $user) {
                 $model = new UserIlias((array)$user);
                 $model->validate();
@@ -204,7 +221,7 @@ class ImportUserForm extends ImportUser
                 })
             );
         }
-        $this->usersJson = json_encode($result);
+        $this->users_json = json_encode($result);
         return true;
     }
     
