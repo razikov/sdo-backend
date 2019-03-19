@@ -8,6 +8,6 @@ if (file_exists(__DIR__ . '/_users.php')) {
 
 return [
     'adminEmail' => 'admin@example.com',
-    'useTree' => 'mp', //'ns', 'mp', 'as',
+    'useTree' => 'ns', //'ns', 'mp', 'as',
     'users' => $users,
 ];

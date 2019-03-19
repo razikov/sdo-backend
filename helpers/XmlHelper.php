@@ -223,11 +223,10 @@ class XmlHelper
                 $cdata = $dom->createCDATASection($modelUser->lastname);
                 $Lastname->appendChild($cdata);
                 //==============
-                //==============
-                $nodeGender = $dom->createElement("Gender");
-                $gender = $user->appendChild($nodeGender);
-                $cdata = $dom->createCDATASection('n');
-                $gender->appendChild($cdata);
+                //$nodeGender = $dom->createElement("Gender");
+                //$gender = $user->appendChild($nodeGender);
+                //$cdata = $dom->createCDATASection('n');
+                //$gender->appendChild($cdata);
                 //==============
                 $nodeEmail = $dom->createElement("Email");
                 $Email = $user->appendChild($nodeEmail);
