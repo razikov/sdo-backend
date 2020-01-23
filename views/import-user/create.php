@@ -103,6 +103,15 @@ $form = ActiveForm::begin([
         ); ?>
     </div>
     <br>
+    <?php
+    $errCount = 0; 
+    foreach ($model->users as $i => $user) {
+        $errCount += count($user->getErrors());
+    } ?>
+    <?php if($errCount > 0): ?>
+    <div class="alert alert-danger" role="alert"><?= "Всего ошибок: $errCount" ?></div>
+    <?php endif; ?>
+    
     <?php foreach ($model->users as $i => $user): ?>
     <div class="row">
         <div class="col-md-1"><?= $i+1 ?>.</div>
