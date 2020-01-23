@@ -69,7 +69,7 @@ $config = [
     ],
     'params' => $params,
     'language' => 'ru',
-    'timeZone' => 'Europe/Moskov',
+    'timeZone' => 'Europe/Moscov',
 ];
 
 if (YII_ENV_DEV) {
